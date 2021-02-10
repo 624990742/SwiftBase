@@ -127,6 +127,61 @@ group.notify(queue: DispatchQueue.main){
 */
 
 /**
-2.栅栏任务
- 特点:
+2.信号量
+ 
+ let semaphore = DispatchSemaphore(value: 2)//创建信号量
+ let queue = DispatchQueue(label: "testConcurrentQueue", attributes: .concurrent)
+
+ queue.async(){
+     semaphore.wait(timeout: .distantFuture)
+     print("run task 1")
+     sleep(1)
+     print("complete task 1")
+     semaphore.signal()
+ }
+
+ queue.async(){
+     semaphore.wait(timeout: .distantFuture)
+     print("run task 2")
+     sleep(1)
+     print("complete task 2")
+     semaphore.signal()
+ }
+
+ queue.async(){
+     semaphore.wait(timeout: .distantFuture)
+     print("run task 3")
+     sleep(1)
+     print("complete task 3")
+     semaphore.signal()
+ }
+
+ */
+
+/**
+ 3.栅栏函数(barrier)
+ 
+ //创建串行队列
+ //        let queue = DispatchQueue.init(label: "test", qos: .default, attributes: .init(rawValue: 0), autoreleaseFrequency: .workItem, target: nil)
+ //创建并行队列
+ let queue = DispatchQueue.init(label: "test1", qos: .default, attributes: .concurrent, autoreleaseFrequency: .workItem, target: nil)
+
+ queue.async {//任务一
+     for index in 0...3 {
+         print("----\(index)---")
+     }
+ }
+ queue.async {//任务二
+     for index in 0...3 {
+         print("===\(index)===");
+     }
+ }
+
+ queue.async(group: nil, qos: .default, flags: .barrier) {
+     print("group")
+ }
+
+ queue.async {
+     print("finish")
+ }
  */
