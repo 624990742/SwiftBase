@@ -1,4 +1,6 @@
 import UIKit
+import Foundation
+
 /*
  数组变形->Map
  1.自己写一个数组交换的方法
@@ -486,7 +488,7 @@ let nonNeighbors = employees.subtracting(neighbors)
 //  }
 //}
 //print([1,2,3,12,1,3,4,5,6,4,6].unique())
-import Foundation
+
 /*
 //闭合范围
 let  singleDigitNumbers = 0..<10
@@ -507,7 +509,92 @@ let result2  = lowercaseLetters.overlaps("c"..<"f")
 
 print("result1:\(result1),result2:\(result2)")
 */
+/**
+ 数组切片练习
+ 
+ extension Array {
+     subscript(input: [Int]) -> ArraySlice<Element>{
+         
+         get {
+             var result = ArraySlice<Element>()
+             for i in input {
+                 assert(i < self.count, "Index out of range")
+                 result.append(self[i])
+             }
+             return result
+         }
+         
+         set {
+             
+             for (index,i) in input.enumerated() {
+                 assert(i < self.count,"Index out of range")
+                 self[i] = newValue[index]
+             }
+         }
+         
+     }
+ }
+
+  var arr = [1,2,3,4,5]
+ arr[[0,2,3]]
+ print(arr)
+ arr[[0,2,3]] = [-1,-3,-4]
+ print(arr)
+ 
+ */
+
+/**
+ typealias 为已经存在的类型重新定义名字
+ */
 
 
+func distance(from point: CGPoint,to anothrtPoint: CGPoint) -> Double {
+    let dx = Double(anothrtPoint.x - point.x)
+    let dy = Double(anothrtPoint.y - point.y)
+    return sqrt(dx * dx + dy * dy)
+}
+let origin: CGPoint = CGPoint(x: 0,y: 0)
+let point: CGPoint = CGPoint(x: 1,y: 1)
+let d: Double = distance(from: origin, to: point)
 
+
+//下边是使用了 typealias重新命名的
+
+
+typealias Location = CGPoint
+typealias Distance = Double
+
+func distance1(from location: Location,to anotherLocation: Location) -> Distance {
+    let dx = Distance(anotherLocation.x - location.x)
+    let dy = Distance(anotherLocation.y - location.y)
+    return sqrt(dx * dx + dy * dy)
+}
+
+let oringin1 : Location = Location(x: 0,y: 0)
+let point1: Location = Location(x: 1, y: 1)
+let d1: Distance = distance1(from: oringin1, to: point1)
+protocol Cat{}
+protocol Dog{}
+typealias Pat = Cat & Dog
+
+
+protocol Food {}
+protocol Animal {
+    func eat(_ food: Food)
+}
+struct Meat: Food { }
+struct Grass: Food { }
+
+struct Tigger: Animal {
+    func eat(_ food: Food){
+        if let meat = food as? Meat {
+            print("eat\(meat)")
+        } else {
+            fatalError("Tiger can only eat meat!")
+        }
+    }
+}
+
+let meat = Meat()
+Tigger().eat(meat)
 
