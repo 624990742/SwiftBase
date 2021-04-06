@@ -545,56 +545,130 @@ print("result1:\(result1),result2:\(result2)")
 
 /**
  typealias 为已经存在的类型重新定义名字
+ 
+ func distance(from point: CGPoint,to anothrtPoint: CGPoint) -> Double {
+     let dx = Double(anothrtPoint.x - point.x)
+     let dy = Double(anothrtPoint.y - point.y)
+     return sqrt(dx * dx + dy * dy)
+ }
+ let origin: CGPoint = CGPoint(x: 0,y: 0)
+ let point: CGPoint = CGPoint(x: 1,y: 1)
+ let d: Double = distance(from: origin, to: point)
+
+
+ //下边是使用了 typealias重新命名的
+
+
+ typealias Location = CGPoint
+ typealias Distance = Double
+
+ func distance1(from location: Location,to anotherLocation: Location) -> Distance {
+     let dx = Distance(anotherLocation.x - location.x)
+     let dy = Distance(anotherLocation.y - location.y)
+     return sqrt(dx * dx + dy * dy)
+ }
+
+ let oringin1 : Location = Location(x: 0,y: 0)
+ let point1: Location = Location(x: 1, y: 1)
+ let d1: Distance = distance1(from: oringin1, to: point1)
+ protocol Cat{}
+ protocol Dog{}
+ typealias Pat = Cat & Dog
+
+
+ protocol Food {}
+ protocol Animal {
+     func eat(_ food: Food)
+ }
+ struct Meat: Food { }
+ struct Grass: Food { }
+
+ struct Tigger: Animal {
+     func eat(_ food: Food){
+         if let meat = food as? Meat {
+             print("eat\(meat)")
+         } else {
+             fatalError("Tiger can only eat meat!")
+         }
+     }
+ }
+
+ let meat = Meat()
+ Tigger().eat(meat)
+
+ 
+ class ClassA {
+     let numA: Int
+     init(num: Int) {
+      numA = num
+     }
+ }
+
+ class ClassB: ClassA {
+     let numB : Int
+
+    override init(num: Int) {
+         numB = num + 1
+     super.init(num: num)
+     }
+ }
+
+
+ class TestObjc {
+     let tempStr: String
+     init(str: String) {
+         tempStr = str
+     }
+ }
+
+ let testObj = TestObjc.init(str: "你好")
+ print(testObj.tempStr)
  */
+/**
+ 给 Int 添加 extension 重新定义 init 为 init? 能在适当的时候返回nil
+ 可以保证安全不会崩溃。
+ extension Int {
+     init?(temString: String){
+     self = 0
+     var digit = temString.count - 1
+         for c in temString {
+             var number = 0
+             if let n = Int(String(c)) {
+                 number = n
+             } else {
+                 
+                 switch c {
+                                 case "一": number = 1
+                                 case "二": number = 2
+                                 case "三": number = 3
+                                 case "四": number = 4
+                                 case "五": number = 5
+                                 case "六": number = 6
+                                 case "七": number = 7
+                                 case "八": number = 8
+                                 case "九": number = 9
+                                 case "零": number = 0
+                                 default: return nil
 
+                 }
+                 
+             }
+             self = self + number * Int(pow(10, Double(digit)))
+             digit = digit - 1
+         }
+     }
+ }
 
-func distance(from point: CGPoint,to anothrtPoint: CGPoint) -> Double {
-    let dx = Double(anothrtPoint.x - point.x)
-    let dy = Double(anothrtPoint.y - point.y)
-    return sqrt(dx * dx + dy * dy)
-}
-let origin: CGPoint = CGPoint(x: 0,y: 0)
-let point: CGPoint = CGPoint(x: 1,y: 1)
-let d: Double = distance(from: origin, to: point)
+ let number1 = Int(temString: "12")
+ print(number1!)
 
+ let number2 = Int(temString: "三二五")
+ print(number2!)
 
-//下边是使用了 typealias重新命名的
+ let number3 = Int(temString: "七9八")
+ print(number3!)
 
+ let number4 = Int(temString: "吃了么")
+ print(number4 as Any)
 
-typealias Location = CGPoint
-typealias Distance = Double
-
-func distance1(from location: Location,to anotherLocation: Location) -> Distance {
-    let dx = Distance(anotherLocation.x - location.x)
-    let dy = Distance(anotherLocation.y - location.y)
-    return sqrt(dx * dx + dy * dy)
-}
-
-let oringin1 : Location = Location(x: 0,y: 0)
-let point1: Location = Location(x: 1, y: 1)
-let d1: Distance = distance1(from: oringin1, to: point1)
-protocol Cat{}
-protocol Dog{}
-typealias Pat = Cat & Dog
-
-
-protocol Food {}
-protocol Animal {
-    func eat(_ food: Food)
-}
-struct Meat: Food { }
-struct Grass: Food { }
-
-struct Tigger: Animal {
-    func eat(_ food: Food){
-        if let meat = food as? Meat {
-            print("eat\(meat)")
-        } else {
-            fatalError("Tiger can only eat meat!")
-        }
-    }
-}
-
-let meat = Meat()
-Tigger().eat(meat)
-
+ */
