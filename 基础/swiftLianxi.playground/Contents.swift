@@ -672,3 +672,504 @@ print("result1:\(result1),result2:\(result2)")
  print(number4 as Any)
 
  */
+
+/**
+ swift
+ func getTestValue(vid: String, completion:(@escaping(String) ->Void)) {
+     
+     if vid.isEmpty == false {
+         completion("测试")
+         return
+     }
+     print("还会执行吗？")
+ }
+
+ getTestValue(vid: "你好") { (str) in
+     print(str)
+ }
+ */
+
+
+/**
+ 正则的使用
+ struct RegexHelper {
+     let regex: NSRegularExpression
+
+     init(_ pattern: String) throws {
+         try regex = NSRegularExpression(pattern: pattern,
+             options: .caseInsensitive)
+              }
+
+             func match(_ input: String) -> Bool {
+                 let matches = regex.matches(in: input,
+                             options: [],
+                             range: NSMakeRange(0, input.utf16.count))
+                 return matches.count > 0
+             }
+         }
+ let mailPattern = "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$"
+
+ let matcher: RegexHelper
+ do {
+   matcher = try RegexHelper(mailPattern)
+ }
+
+ let maybeMailAddress = "ttt.iyl"
+
+ if matcher.match(maybeMailAddress) {
+     print("有效的邮箱地址")
+ }
+ 
+ //类型重载
+ precedencegroup MatchPrecedence {
+     associativity: none
+     higherThan: DefaultPrecedence
+ }
+
+ infix operator =~: MatchPrecedence
+ func =~(lhs:String, rhs:String) -> Bool  {
+     do {
+         
+         return try RegexHelper(rhs).match(lhs)
+     } catch _ {
+         return false
+     }
+     
+ }
+
+
+ if "onev@onevcat.com" =~
+     "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$" {
+         print("有效的邮箱地址")
+ }
+
+ */
+/**
+ AnyClass  元类类型的使用
+ 
+ class  A {
+     class func method() {
+         print("Hello")
+     }
+ }
+
+ let classA :AnyClass = A.self
+ (classA as! A.Type).method()
+
+
+ let typeA : A.Type = A.self
+
+ typeA.method()
+
+
+ class TestControllerA: UIViewController {
+     
+ }
+
+ class TestControllerB: UIViewController {
+     
+ }
+
+ let vcTestlss: [AnyClass] = [TestControllerA.self, TestControllerB.self]
+
+ func setupVC(_ vcTypes: [AnyClass]){
+     for vcType in vcTypes {
+         if vcType is UIViewController.Type {
+             let vc = (vcType as! UIViewController.Type).init()
+             print("vc::\(vc)")
+         }
+     }
+ }
+
+ setupVC(vcTestlss)
+
+ */
+
+/**
+ 
+ .Self的使用方法
+ 
+ 
+ protocol  Copyable {
+     func copy() -> Self
+ }
+
+ class MyClass: Copyable {
+     var num = 1
+ //    func copy() -> Self {
+ //        let result = MyClass()
+ //        result.num = num
+ //        return result as! Self
+ //    }
+     
+     func copy() -> Self {
+         let result = type(of: self).init()
+         result.num = num
+         return result
+     }
+  
+     required init(){
+         
+     }
+ }
+
+ let obhect = MyClass()
+ obhect.num = 100
+
+ let newObject = obhect.copy()
+ obhect.num = 1
+
+ print(obhect.num)
+ print(newObject.num)
+
+ */
+
+
+/**
+ 类可以多重继承
+ 
+ class Pet {}
+ class Cat: Pet {}
+ class Dog: Pet {}
+
+ func printPet(_ pet: Pet) {
+     print("Pet")
+ }
+
+ func printPet(_ cat: Cat) {
+     print("Meow")
+ }
+
+ func printPet(_ dog: Dog) {
+     print("Bark")
+ }
+ printPet(Cat()) // Meow
+ printPet(Dog()) // Bark
+ printPet(Pet()) // Pet”
+ */
+
+
+/**
+ lazy 的使用
+ 
+ 
+ 
+ let data = 1...3
+ let result = data.lazy.map {
+     (i: Int) -> Int in
+     print("正在处理 \(i)")
+     return i * 2
+ }
+
+
+ print("准备访问结果")
+ for i in result {
+     print("操作后结果为 \(i)")
+ }
+
+ print("操作完毕")
+ 
+ 
+ 
+ 没有使用lazy的操作
+ let data = 1...3
+ let result = data.map {
+     (i: Int) -> Int in
+     print("正在处理 \(i)")
+     return i * 2
+ }
+
+ print("准备访问结果")
+ for i in result {
+     print("操作后结果为 \(i)")
+ }
+
+ print("操作完毕")
+
+
+ */
+
+
+/**
+
+ //
+ //struct Person {
+ //    var name: String
+ //    var age: Int
+ //}
+ //var xiaoMing = Person(name: "xiaoMing", age: 16)
+ //let r = Mirror(reflecting: xiaoMing)
+ //print("xiaoMing 是 \(r.displayStyle!)")
+ //print("xiaoMing 父亲是\(r.subjectType)")
+ //print("xiaoMing superclassMirror是\(String(describing: r.superclassMirror))")
+ //
+ //print("属性个数:\(r.children.count)")
+ //for child in r.children {
+ //    print("属性名:\(String(describing: child.label))，值:\(child.value)")
+ //}
+ //print("============")
+ //dump(xiaoMing)
+
+ //
+ //func valueToKey(_ object: Any,key: String) -> Any? {
+ //    let mirror = Mirror(reflecting: object)
+ //    for child in mirror.children {
+ //
+ //        let(targetKey,targetMirror) = (child.label,child.value)
+ //        if key == targetKey {
+ //            return targetMirror
+ //        }
+ //    }
+ //    return nil
+ //}
+ //
+ //
+ //func setValueToKey(_ object: Person,Key: String,newValue: String){
+ //
+ //    let mirror = Mirror(reflecting: object)
+ //    for child in mirror.children {
+ //        if Key == child.label {
+ //            object.name = newValue
+ //        }
+ //    }
+ //
+ //}
+ //
+ //setValueToKey(xiaoMing, Key: "name", newValue: "码农晨仔")
+ //
+ //dump(xiaoMing)
+
+ //
+ //if let name = valueToKey(xiaoMing, key: "name") as? String {
+ //    print("通过key得到值:\(name)")
+ //}
+
+
+ var aNil: String? = nil
+
+ var anotherNil: String?? = aNil
+ var literalNil: String?? = nil
+ if anotherNil != nil {
+     print("anotherNil")
+ }
+
+ if literalNil != nil {
+     print("literalNil")
+ }
+ 
+ 
+ 
+ 
+ protocol A1 {
+     func method1() -> String
+ }
+
+ struct B1: A1 {
+     func method1() -> String {
+         return "hello"
+     }
+ }
+ let b1 = B1() // b1 is B1
+ b1.method1()
+ // hello
+
+ let a1: A1 = B1()
+ // a1 is A1
+ a1.method1()
+ // hello
+
+ protocol A2 {
+     func method1() -> String
+ }
+
+ extension A2 {
+     func method1() -> String {
+         return "hi"
+     }
+
+     func method2() -> String {
+         return "hi"
+     }
+ }
+
+
+
+ struct B2: A2 {
+     func method1() -> String {
+         return "method1"
+     }
+
+     func method2() -> String {
+         return "method2"
+     }
+ }
+ let b2 = B2()
+
+ b2.method1() // hello
+ b2.method2() // hello”
+
+ let a2 = b2 as A2
+
+ a2.method1() // hello
+ a2.method2() // hi
+ 
+ 
+ let sortableArray: [Int] = [3,1,2,4,5]
+ let unsortableArray: [Any?] = ["Hello", 4, nil]
+ let testArr1 = sortableArray.sorted()
+ print("testArr1==>\(testArr1)")
+
+ let testArr2 = unsortableArray.sorted()
+ print("testArr2==>\(testArr2)")
+
+ //单例写法一
+ class MyManager {
+     class var shared : MyManager {
+         struct Static {
+             static let sharedInstance : MyManager = MyManager()
+         }
+
+         return Static.sharedInstance
+     }
+ }
+
+ 
+ //单例写法二
+ private let sharedInstance = MyManager()
+ class MyManager  {
+     class var shared : MyManager {
+         return sharedInstance
+     }
+ }
+ */
+
+
+//单例写法三
+//class MyManager  {
+//    static let shared = MyManager()
+//    private init() {}
+//}
+//
+//for i in 0...10 {
+//    DispatchQueue.global().async {
+//        print("前==>\(i)")
+//    }
+//}
+//DispatchQueue.global().async(flags: .barrier) {
+//    print("this is barrier")
+//}
+//for i in 11...20 {
+//    DispatchQueue.global().async {
+//        print("后==>\(i)")
+//    }
+//}
+
+//
+//class testTextView: UITextView {
+//
+//    var placeHolderStr = "请输入" {
+//        didSet{
+//            holderView.text = placeHolderStr
+//        }
+//    }
+//
+//
+//    lazy var holderView: UITextView = {
+//        let holder = UITextView(frame: CGRect.zero)
+//        holder.isUserInteractionEnabled = false
+//        holder.backgroundColor = UIColor.clear
+//        holder.text = "这里是占位符"
+//        holder.textColor = UIColor.lightGray
+//        holder.isEditable = false
+//        holder.isHidden = self.hasText
+//        return holder
+//    }()
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        setupLab()
+//    }
+//    override init(frame: CGRect, textContainer: NSTextContainer?) {
+//        super.init(frame: frame, textContainer: textContainer)
+//        setupLab()
+//    }
+//    func setupLab() -> Void {
+//        addSubview(holderView)
+//        NotificationCenter.default.addObserver(self, selector: #selector(textHaveChangeText), name: UITextView.textDidChangeNotification, object: nil)
+//    }
+//
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        holderView.frame = bounds
+//    }
+//
+//    override var text: String! {
+//        didSet{
+//            holderView.isHidden = self.hasText
+//        }
+//    }
+//
+//    /// 改变文字了
+//    @objc func textHaveChangeText() ->Void {
+//        holderView.isHidden = self.hasText
+//    }
+//
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
+//
+//}
+//let queue = OperationQueue()
+// queue.maxConcurrentOperationCount = 3
+//let op1 = BlockOperation {
+//
+//    print("任务1---\(Thread.current)")
+//}
+//
+//let op2 = BlockOperation {
+//
+//    print("任务2---\(Thread.current)")
+//}
+//
+//let op3 = BlockOperation {
+//
+//    print("任务3---\(Thread.current)")
+//}
+//
+////op2.addDependency(op1)
+////op3.addDependency(op2)
+//
+//
+//queue.addOperation(op1)
+//queue.addOperation(op2)
+//queue.addOperation(op3)
+
+////原始字符串
+//let str1 = "   欢迎访问 hangge.com   "
+////除去前后空格
+//let str2 = str1.trimmingCharacters(in: .whitespaces)
+//
+//print(str1)
+//print("=======")
+//print(str2)
+
+
+let fibs = [0,1,1,2,3,5]
+var total = 0
+//for num in fibs {
+//    total = total + num
+//}
+//print("total==>\(total)")
+
+//
+//let sum = fibs.reduce(0) { total, num in
+//    total + num
+//}
+let tt = fibs.reduce(0,+)
+print("total==>\(tt)")
+
+
+
+
+
+
