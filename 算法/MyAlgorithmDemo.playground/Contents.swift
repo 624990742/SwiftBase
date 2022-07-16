@@ -61,32 +61,48 @@ print("前边：\(nums)")
 print("===============")
 selectionSortMethod(&nums)
 print("后边：\(nums)")
+ 
+ 写法2：
+ func selectionSortMethod(_ nums: [Int]) -> [Int] {
+   guard nums.count > 1 else { return nums }//必须大于1才能使用
+
+   var array = nums
+   var minIndex: Int
+     
+   for i in 0 ..< array.count - 1 {
+     minIndex = i
+     for j in i + 1 ..< array.count {
+       if array[j] < array[minIndex] {
+         minIndex = j
+       }
+     }
+
+     if i != minIndex {
+         array.swapAt(i, minIndex)
+     }
+   }
+   return array
+ }
+
+ let oringeList = [10,1,2,9,-1,7,19,5,-9,3,8,13,17]
+ let afterList = selectionSortMethod(oringeList)
+ print(oringeList)
+ print("======")
+ print(afterList)
+ 
 */
 
-func selectionSortMethod(_ nums: [Int]) -> [Int] {
-  guard nums.count > 1 else { return nums }//必须大于1才能使用
+/// Mark - 选择排序
 
-  var array = nums
-  var minIndex: Int
-    
-  for i in 0 ..< array.count - 1 {
-    minIndex = i
-    for j in i + 1 ..< array.count {
-      if array[j] < array[minIndex] {
-        minIndex = j
-      }
-    }
 
-    if i != minIndex {
-        array.swapAt(i, minIndex)
+/// Mark - 数据结构与算法之美案例代码
+func cal(n: Int) -> Int{
+    var sum = 0
+    let i = 1
+    for i in i...n  {
+        sum = sum + i
     }
-  }
-  return array
+    return sum
 }
 
-let oringeList = [10,1,2,9,-1,7,19,5,-9,3,8,13,17]
-let afterList = selectionSortMethod(oringeList)
-print(oringeList)
-print("======")
-print(afterList)
-
+print(cal(n: 10))
