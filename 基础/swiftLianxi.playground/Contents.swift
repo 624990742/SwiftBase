@@ -1154,8 +1154,8 @@ print("result1:\(result1),result2:\(result2)")
 //print(str2)
 
 
-let fibs = [0,1,1,2,3,5]
-var total = 0
+//let fibs = [0,1,1,2,3,5]
+//var total = 0
 //for num in fibs {
 //    total = total + num
 //}
@@ -1165,11 +1165,198 @@ var total = 0
 //let sum = fibs.reduce(0) { total, num in
 //    total + num
 //}
-let tt = fibs.reduce(0,+)
-print("total==>\(tt)")
+//let tt = fibs.reduce(0,+)
+//print("total==>\(tt)")
+/**
+ 泛型
+ 常规交换函数，局限性只能交换同类型的数据
+ func swapTwoInts(_ a: inout Int, _ b: inout Int) {
+     let temporaryA = a
+     a = b
+     b = temporaryA
+ }
+
+ var someInt = 3
+ var anotherInt = 107
+ swapTwoInts(&someInt, &anotherInt)
+ print("someInt is now \(someInt), and anotherInt is now \(anotherInt)")
+ 
+ ///使用泛型之后封装的方法，只需要保证参数“T”的类型一致就可以使用，不用像
+ ///上边的常规方法一样每更换一个类型就得写一遍方法
+ func swapTwoValues<T>(_ a: inout T,_ b: inout T) {
+     let temporaryA = a
+       a = b
+       b = temporaryA
+ }
+
+ var someInt = 3
+ var anotherInt = 107
+
+ var someString = "hello"
+ var anotherString = "world"
+
+ swapTwoValues( &someInt, &anotherInt)
+ print("someInt is now +\(someInt), and anotherInt is now \(anotherInt)")
+ print("========")
+ swapTwoValues( &someString, &anotherString)
+ print("someInt is now \(someString), and anotherInt is now \(anotherString)")
+ 
+ 
+ struct Stack<Element> {
+     var items: [Element] = []
+     mutating func push(_ item: Element) {
+         items.append(item)
+     }
+     mutating func pop() -> Element {
+         return items.removeLast()
+     }
+ }
+ var stackOfStrings = Stack<String>()
+ stackOfStrings.push("uno")
+ stackOfStrings.push("dos")
+ stackOfStrings.push("tres")
+ stackOfStrings.push("cuatro")
+
+ Dictionary
+
+
+ */
+//
+//let testN = 8
+//let rrr = testN % 3
+//print(floor(Double(rrr)))
+//
+//extension Float {
+//    /// 准确的小数尾截取 - 没有进位
+//    func decimalString(_ base: Self = 1) -> String {
+//        let tempCount: Self = pow(10, base)
+//        let temp = self*tempCount
+//
+//        let target = Self(Int(temp))
+//        let stepone = target/tempCount
+//        if stepone.truncatingRemainder(dividingBy: 1) == 0 {
+//            return String(format: "%.0f", stepone)
+//        }else{
+//            return "\(stepone)"
+//        }
+//    }
+//}
+//
+//
+//
+//extension String {
+//
+//
+//  static func dealCharst(meaning: String) -> String {
+//       var mutableMeaning  = "\(meaning)"
+//        if let subRange = Range<String.Index>(NSRange(location: 0, length: meaning.count), in: mutableMeaning) { mutableMeaning = mutableMeaning.replacingOccurrences(of: "<br>", with: "\n", options: [], range: subRange) }
+//        return mutableMeaning
+//    }
+//}
+//let test = "art. 这，那<br>adv. 更加；越 ... 越...<br>测试      "
+//let str2 = test.replacingOccurrences(of: "<br>", with: "\n")
+//let str3 = str2.trimmingCharacters(in: .whitespacesAndNewlines)
+//print(str3)
+//
 
 
 
 
+//
+//let test1 = [1,2,3]
+//let test2 = [4,5,6]
+//var test3 = [Int]()
+//test3.append(contentsOf: test1)
+//test3.append(contentsOf: test2)
+//
 
 
+var str = "56"
+//var tt = str.prefix(1)
+//print(tt)
+//tt = tt + "."
+
+//var tt = ""
+//for (idx,char) in str.enumerated() {
+//    if idx == 0 {
+//        tt = String(char) + "."
+//    } else {
+//        tt = tt + String(char)
+//    }
+//}
+//print("\(tt)")
+/**
+ 动态检查
+ 
+ @dynamicMemberLookup
+ struct Person {
+     subscript(dynamicMember member: String) -> String {
+         let properties = ["nickname": "Zhuo", "city": "Hangzhou"]
+         return properties[member, default: "undefined"]
+     }
+ }
+
+ //执行以下代码
+ let p = Person()
+ print(p.city)
+ print(p.nickname)
+ print(p.name)
+
+
+ @dynamicMemberLookup
+ class TestPerson {
+     subscript(dynamicMember member: String) -> String {
+         let properties = ["nickname": "Zhuo", "city": "Hangzhou"]
+         return properties[member, default: "undefined"]
+     }
+ }
+ //执行以下代码
+ let p = TestPerson()
+ print(p.city)
+ print(p.nickname)
+ print(p.name)
+ */
+
+//let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+//
+//let arr2 = names.compactMap { a-> Int? in
+//    let length = a.count
+//    guard length > 0 else { return nil }
+//    return length
+//}
+//
+//print("\(arr2)")
+
+
+
+
+ func testDealNumber(str: String) -> CGFloat {
+
+     var dealStr = str
+     var num = 0.0
+
+     if dealStr.count > 2 {
+         let index = dealStr.count - 1
+         var tempStr = dealStr.prefix(index)
+         tempStr = tempStr + "."
+         num = ceil(Double(tempStr) ?? 0.0) * 10
+     } else {
+         var tempStr = ""
+          for (idx,t) in str.enumerated() {
+             if idx == 0 {
+                 tempStr = String(t) + "."
+             } else {
+                 tempStr = tempStr + String(t)
+             }
+         }
+        num = ceil(Double(tempStr) ?? 0.0) * 10
+     }
+   return num
+}
+
+
+let test1 = testDealNumber(str: "20")
+print(test1)
+
+let test2 = testDealNumber(str: "112")
+print(test2)
