@@ -1328,16 +1328,18 @@ var str = "56"
 //print("\(arr2)")
 
 
-
-
+/**
+ 
+ 处理小数点
+ 
  func testDealNumber(str: String) -> CGFloat {
-
-     var dealStr = str
+ 
+     var deallStr = str
      var num = 0.0
 
-     if dealStr.count > 2 {
-         let index = dealStr.count - 1
-         var tempStr = dealStr.prefix(index)
+     if deallStr.count > 2 {
+         let index = deallStr.count - 1
+         var tempStr = deallStr.prefix(index)
          tempStr = tempStr + "."
          num = ceil(Double(tempStr) ?? 0.0) * 10
      } else {
@@ -1360,3 +1362,189 @@ print(test1)
 
 let test2 = testDealNumber(str: "112")
 print(test2)
+
+ 
+ */
+
+/**
+ 1.安全性和稳定性：
+ 在 Swift 中，使用可选类型（Optionals）可以很好地处理可能为空的值。这样可以避免在运行时发生空指针异常。
+ 
+ 
+ // Swift 中的可选类型
+ var optionalName: String? = "John"
+ // 使用 if let 来处理可选值
+ if let name = optionalName {
+     print("Hello, \(name)")
+ } else {
+     print("Name is nil.")
+ }
+ */
+
+
+/**
+ 2.简洁易读：
+ 例子：Swift 的闭包（Closures）语法相比 Objective-C 的块（Blocks）更加简洁和易读。
+ 
+ 
+ 
+ 
+ 
+ 
+ Objective-C
+ 
+ #import <Foundation/Foundation.h>
+
+ int main(int argc, const char * argv[]) {
+     @autoreleasepool {
+         // Objective-C 中的闭包（Blocks）
+         NSArray *numbers = @[@1, @2, @3, @4, @5];
+         
+         // 使用 Blocks 实现与 Swift 中的 map 类似的功能
+         NSArray *squaredNumbers = [numbers valueForKeyPath:@"@unionOfObjects.self"];
+         NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:squaredNumbers.count];
+         
+         void (^squareBlock)(NSNumber *, NSUInteger, BOOL *) = ^(NSNumber *number, NSUInteger idx, BOOL *stop) {
+             NSInteger squaredValue = [number integerValue] * [number integerValue];
+             [resultArray addObject:@(squaredValue)];
+         };
+         
+         [numbers enumerateObjectsUsingBlock:squareBlock];
+         
+         NSLog(@"%@", resultArray); // Output: [1, 4, 9, 16, 25]
+     }
+     return 0;
+ }
+
+ */
+// Swift 中的闭包
+let numbers = [1, 2, 3, 4, 5]
+let squaredNumbers = numbers.map { $0 * $0 }
+print(squaredNumbers) // Output: [1, 4, 9, 16, 25]
+
+
+
+
+// Swift 中的运行时反射
+class Dog {
+    func bark() {
+        print("Woof!")
+    }
+}
+
+let className = "Dog"
+if let classType = NSClassFromString(className) as? NSObject.Type {
+    let dog = classType.init() as? Dog
+    dog?.bark() // Output: "Woof!"
+}
+
+
+// 泛型函数
+func swapValues<T>(_ a: inout T, _ b: inout T) {
+    let temp = a
+    a = b
+    b = temp
+}
+
+var x = 10
+var y = 20
+swapValues(&x, &y)
+print("x: \(x), y: \(y)") // Output: "x: 20, y: 10"
+
+var str1 = "Hello"
+var str2 = "World"
+swapValues(&str1, &str2)
+print("str1: \(str1), str2: \(str2)") // Output: "str1: World, str2: Hello"
+
+
+
+// 定义一个简单的协议
+protocol Greeting {
+    func sayHello()
+}
+
+// 通过协议扩展为 sayHello 提供默认实现
+extension Greeting {
+    func sayHello() {
+        print("Hello!")
+    }
+}
+
+// 实现 Greeting 协议的类可以选择重写 sayHello 方法
+class Person: Greeting {
+    func sayHello() {
+        print("Hi!")
+    }
+}
+
+let person = Person()
+person.sayHello() // Output: "Hi!"
+
+
+
+
+
+// 示例中的一些代码访问级别
+public class PublicClass {
+    // 可被其他模块访问
+}
+
+internal class InternalClass {
+    // 只能在当前模块内部访问
+}
+
+fileprivate class FilePrivateClass {
+    // 只能在当前文件内部访问
+}
+
+private class PrivateClass {
+    // 只能在当前类内部访问
+}
+
+
+
+
+
+struct Vector2D {
+    var x: Double
+    var y: Double
+}
+
+// 重载加法运算符
+func +(left: Vector2D, right: Vector2D) -> Vector2D {
+    return Vector2D(x: left.x + right.x, y: left.y + right.y)
+}
+
+let vector1 = Vector2D(x: 1.0, y: 2.0)
+let vector2 = Vector2D(x: 3.0, y: 4.0)
+let resultVector = vector1 + vector2
+print(resultVector) // Output: Vector2D(x: 4.0, y: 6.0)
+
+
+
+
+// 通过 nonisolated 关键字标记异步函数，以避免隐式的任务执行
+nonisolated func processData() async {
+    // 在这里执行异步操作
+}
+
+// 使用 actor 关键字定义一个 actor 类
+actor MyActor {
+    var data: Int = 0
+    
+    // 通过 isolated 关键字标记需要访问 actor 数据的函数
+     func updateData(_ value: Int) {
+        data = value
+    }
+}
+
+// 创建 MyActor 实例
+let actorInstance = MyActor()
+// 通过一个异步闭包调用 isolated 函数
+Task {
+    
+    
+    await actorInstance.updateData(42)
+}
+
+
