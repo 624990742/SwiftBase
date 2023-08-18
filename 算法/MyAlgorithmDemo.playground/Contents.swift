@@ -96,13 +96,49 @@ print("后边：\(nums)")
 
 
 /// Mark - 数据结构与算法之美案例代码
-func cal(n: Int) -> Int{
-    var sum = 0
-    let i = 1
-    for i in i...n  {
-        sum = sum + i
-    }
-    return sum
-}
+//func cal(n: Int) -> Int{
+//    var sum = 0
+//    let i = 1
+//    for i in i...n  {
+//        sum = sum + i
+//    }
+//    return sum
+//}
+//
+//print(cal(n: 10))
 
-print(cal(n: 10))
+
+/*
+ /// Mark - 折半查找二分查找
+ ///array  查找的数组
+ ///target  目标元素
+ ///-> Int?  返回目标元素的索引
+ func binarySearch(_ array: [Int], target: Int) -> Int? {
+     var left = 0
+     var right = array.count - 1//数组的总个数
+     
+     while left <= right {
+         let mid = left + (right - left) / 2
+         let obj = array[mid] //根据索引取出元素
+         if obj == target {
+             return mid
+         } else if obj < target {
+             left = mid + 1
+         } else {
+             right = mid - 1
+         }
+     }
+
+     return nil // 目标元素不在数组中
+ }
+
+ let sortedArray = [1, 3, 5, 7, 9, 11, 13, 15, 17]
+ if let index = binarySearch(sortedArray, target: 11) {
+     print("目标元素在索引 \(index) 处。")
+ } else {
+     print("目标元素不在数组中。")
+ }
+ 
+ */
+
+
